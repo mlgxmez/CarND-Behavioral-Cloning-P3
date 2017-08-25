@@ -54,7 +54,7 @@ Initially, data had been collected by driving the car in the simulator two laps 
 
 ### Model Architecture and Training Strategy
 
-####1. Solution Design Approach
+#### 1. Solution Design Approach
 
 The overall strategy for deriving a model architecture was to use similar networks built in previous projects since there wasn't any template to build the model from. ..
 
@@ -72,6 +72,6 @@ Here is a visualization of the network architecture
 
 ![alt text][image1]
 
-####3. Creation of the Training Set & Training Process
+#### 2. Creation of the Training Set & Training Process
 
 Images from Udacity were good enough to train the model. The 20% of all the images where randomly assigned to the test set and the rest to train the model. Besides the usual normalization process and cropping the images no other method was used in the preprocessing step.
