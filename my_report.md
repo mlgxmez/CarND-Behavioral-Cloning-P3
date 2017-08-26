@@ -36,19 +36,19 @@ python drive.py model.h5
 
 The model.py file contains the code for training and saving the convolution neural network. The file shows the pipeline I used for training and validating the model, and it contains comments to explain how the code works.
 
-The model for this project built consists of a convolution neural network with 5x5 and 3x3 filter sizes and depths between 6 and 12 (model.py lines 18-24). At every convolutional layer, a pooling layer is appended to it. 
+The model for this project built consists of a convolution neural network with 5x5 and 3x3 filter sizes and depths between 6 and 12 (model.py lines 65, 67, 69 and 71). At every convolutional layer, a pooling layer is appended to it. 
 
-The model includes RELU layers to introduce nonlinearity (code line 20), and the data is normalized in the model using a Keras lambda layer (code line 18). Another layer performs image cropping to remove the landscape and the car body from the image.
+The model includes RELU layers to introduce nonlinearity, and the data is normalized in the model using a Keras lambda layer (code line 61). Another layer performs image cropping to remove the landscape and the car body from the image (code line 62).
 
-Three dense layers with a decreasing number of hidden units are added to the model, along with dropout layers in order to reduce overfitting model.py lines 21). 
+Three dense layers with a decreasing number of hidden units are added (model.py lines 74, 76 and 78), along with dropout layers in order to reduce overfitting (model.py lines 75 and 77). 
 
-The model was trained and validated on different data sets to ensure that the model was not overfitting (code line 10-16). The model was tested by running it through the simulator and ensuring that the vehicle could stay on the track. This is shown later in the video.
+The model was trained and validated on different data sets to ensure that the model was not overfitting (code line 49-52). The model was tested by running it through the simulator and ensuring that the vehicle could stay on the track. This is shown later in the video.
 
-####3. Model parameter tuning
+#### 1. Model parameter tuning
 
-The model used the rmsprop optimizer predefined in Keras, so the learning rate was not tuned manually (model.py line 25).
+The model used the rmsprop optimizer predefined in Keras, so the learning rate was not tuned manually (model.py line 87).
 
-####4. Appropriate training data
+#### 2. Appropriate training data
 
 Initially, data had been collected by driving the car in the simulator two laps in the forward direction and two more laps in the opposite direction. The problem with the model was the car couldn’t properly learn the features associated with the bridge section. At the end the data set provided by Udacity was used to train the model.
 
@@ -70,7 +70,36 @@ At the end of the process, the vehicle is able to drive autonomously around the 
 
 Here is a visualization of the network architecture 
 
-![alt text][image1]
+| Layer         		|     Description	        					| 
+|:---------------------:|:---------------------------------------------:| 
+| Input         		| 160x320x3 RGB image   							| 
+| Lambda            |                   |
+| Cropping          | outputs 90x320x3  |
+| Convolution 5x5     	| 1x1 stride, valid padding, outputs 88x318x6 	|
+| RELU					|												|
+| Max pooling	      	| 2x2 stride,  outputs 44x159x6 				|
+| Convolution 5x5     	| 1x1 stride, valid padding, outputs 42x157x6 	|
+| RELU					|												|
+| Max pooling	      	| 2x2 stride,  outputs 20x77x6 				|
+| Convolution 5x5     	| 1x1 stride, valid padding, outputs 18x75x6 	|
+| RELU					|												|
+| Max pooling	      	| 2x2 stride,  outputs 8x36x6 				|
+| Convolution 3x3     	| 1x1 stride, valid padding, outputs 8x36x12 	|
+| RELU					|												|
+| Max pooling	      	| 2x2 stride,  outputs 3x7x12 				|
+| Flatten  |  outputs 612      |
+| Dense		| inputs 612, outputs 512    						|
+| RELU					|												|
+| Dropout					|												|
+| Dense	| inputs 512, outputs 256    						|
+| RELU					|												|
+| Dropout					|												|
+| Dense		| inputs 256, outputs 32   						|
+| Dense 	| inputs 32, outputs 1   						|
+
+<!--![alt text][image1]-->
+
+The output layer minimizes the mean square error (MSE) of the  real and predicted steering angle of the car.
 
 #### 2. Creation of the Training Set & Training Process
 
