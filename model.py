@@ -38,7 +38,7 @@ for ll in lines:
 	image_frame = [arrange_img(ll[i]) for i in range(3)]
 	images = images + image_frame
 	steering = float(ll[3])
-	steering_angles = steering_angles + [steering, steering + 1, steering - 1]
+	steering_angles = steering_angles + [steering, steering + 0.2, steering - 0.2]
 
 X_data = np.array(images)
 y_data = steering_angles
@@ -55,6 +55,7 @@ from keras import optimizers
 from keras.models import Model
 from keras.layers import Dense, MaxPooling2D, Input, Cropping2D, Dropout, Lambda, Flatten
 from keras.layers.convolutional import Convolution2D
+from keras.utils.visualize_util import plot
 
 # Input and preprocessing layers
 img_tensor_0 = Input(shape=(160, 320, 3))
@@ -66,9 +67,9 @@ x = Convolution2D(6,5,5, activation='relu',border_mode='valid')(img_tensor_2)
 x = MaxPooling2D()(x)
 x = Convolution2D(6,5,5, activation='relu',border_mode='valid')(x)
 x = MaxPooling2D()(x)
-x = Convolution2D(6,5,5, activation='relu',border_mode='valid')(x)
+x = Convolution2D(12,5,5, activation='relu',border_mode='valid')(x)
 x = MaxPooling2D()(x)
-x = Convolution2D(12,3,3, activation='relu',border_mode='valid')(x)
+x = Convolution2D(32,3,3, activation='relu',border_mode='valid')(x)
 x = MaxPooling2D()(x)
 x = Flatten()(x)
 x = Dense(512, activation='relu')(x)
@@ -83,11 +84,13 @@ predictions = Dense(1)(x)
 # Build the model
 model = Model(input=img_tensor_0, output=predictions)
 
+plot(model, to_file='model.png', show_shapes = True)
+
 # Define the loss function and the optimizer
 model.compile(loss='mse', optimizer='rmsprop')
 
 # Train the model using the generator function
-model.fit_generator(train_generator, samples_per_epoch=(len(X_train)//batch_size)*batch_size, validation_data=validation_generator, nb_val_samples=len(X_validation), nb_epoch=5)
+model.fit_generator(train_generator, samples_per_epoch=(len(X_train)//batch_size)*batch_size, validation_data=validation_generator, nb_val_samples=len(X_validation), nb_epoch=4)
 
 # Save the model to drive the car in autonomous mode
 model.save('model.h5')
