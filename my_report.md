@@ -11,8 +11,8 @@ The goals / steps of this project are the following:
 [//]: # (Image References)
 
 [image1]: ./model.png "Model Visualization"
-[image2]: ./examples/placeholder.png "Grayscaling"
-[image3]: ./examples/placeholder_small.png "Recovery Image"
+[image2]: ./before_cropping.jpg "Example image before cropping"
+[image3]: ./after_cropping.jpg "Example image after cropping"
 [image4]: ./examples/placeholder_small.png "Recovery Image"
 [image5]: ./examples/placeholder_small.png "Recovery Image"
 [image6]: ./examples/placeholder_small.png "Normal Image"
@@ -36,11 +36,11 @@ python drive.py model.h5
 
 The model.py file contains the code for training and saving the convolution neural network. The file shows the pipeline I used for training and validating the model, and it contains comments to explain how the code works.
 
-The model for this project built consists of a convolution neural network with 5x5 and 3x3 filter sizes and depths between 6 and 32 (model.py lines 65, 67, 69 and 71). At every convolutional layer, a pooling layer is appended to it. 
+The model for this project built consists of a convolution neural network with 5x5 and 3x3 filter sizes and depths between 6 and 32 (model.py lines 66, 68, 70 and 72). At every convolutional layer, a pooling layer is appended to it. 
 
-The model includes RELU layers to introduce nonlinearity, and the data is normalized in the model using a Keras lambda layer (code line 61). Another layer performs image cropping to remove the landscape and the car body from the image (code line 62).
+The model includes RELU layers to introduce nonlinearity, and the data is normalized in the model using a Keras lambda layer (code line 62). Another layer performs image cropping to remove the landscape and the car body from the image (code line 63).
 
-Three dense layers with a decreasing number of hidden units are added (model.py lines 74, 76 and 78), along with dropout layers in order to reduce overfitting (model.py lines 75 and 77). 
+Three dense layers with a decreasing number of hidden units are added (model.py lines 75, 77 and 79), along with dropout layers in order to reduce overfitting (model.py lines 76 and 78). 
 
 The model was trained and validated on different data sets to ensure that the model was not overfitting (code line 49-52). The model was tested by running it through the simulator and ensuring that the vehicle could stay on the track. This is shown later in the video.
 
@@ -74,33 +74,6 @@ At the end of the process, the vehicle is able to drive autonomously around the 
 
 Here is a visualization of the network architecture 
 
-<!--| Layer         		|     Description	        					| 
-|:---------------------:|:---------------------------------------------:| 
-| Input         		| 160x320x3 RGB image   							| 
-| Lambda            |                   |
-| Cropping          | outputs 90x320x3  |
-| Convolution 5x5     	| 1x1 stride, valid padding, outputs 88x318x6 	|
-| RELU					|												|
-| Max pooling	      	| 2x2 stride,  outputs 44x159x6 				|
-| Convolution 5x5     	| 1x1 stride, valid padding, outputs 42x157x6 	|
-| RELU					|												|
-| Max pooling	      	| 2x2 stride,  outputs 20x77x6 				|
-| Convolution 5x5     	| 1x1 stride, valid padding, outputs 18x75x6 	|
-| RELU					|												|
-| Max pooling	      	| 2x2 stride,  outputs 8x36x6 				|
-| Convolution 3x3     	| 1x1 stride, valid padding, outputs 8x36x12 	|
-| RELU					|												|
-| Max pooling	      	| 2x2 stride,  outputs 3x7x12 				|
-| Flatten  |  outputs 612      |
-| Dense		| inputs 612, outputs 512    						|
-| RELU					|												|
-| Dropout					|												|
-| Dense	| inputs 512, outputs 256    						|
-| RELU					|												|
-| Dropout					|												|
-| Dense		| inputs 256, outputs 32   						|
-| Dense 	| inputs 32, outputs 1   						| -->
-
 ![alt text][image1]
 
 The output layer minimizes the mean square error (MSE) of the  real and predicted steering angle of the car.
@@ -108,3 +81,7 @@ The output layer minimizes the mean square error (MSE) of the  real and predicte
 #### 2. Creation of the Training Set & Training Process
 
 Images from Udacity were good enough to train the model. The 20% of all the images where randomly assigned to the test set and the rest to train the model. Besides the usual normalization process and cropping the images no other method was used in the preprocessing step.
+
+![alt text][image2]  ![alt text][image3]
+
+The image on the left shows an image from the front camera of the car and the image on the right shows the output image from the cropping layer.
