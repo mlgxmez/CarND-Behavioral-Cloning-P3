@@ -10,7 +10,7 @@ The goals / steps of this project are the following:
 
 [//]: # (Image References)
 
-[image1]: ./examples/placeholder.png "Model Visualization"
+[image1]: ./model.png "Model Visualization"
 [image2]: ./examples/placeholder.png "Grayscaling"
 [image3]: ./examples/placeholder_small.png "Recovery Image"
 [image4]: ./examples/placeholder_small.png "Recovery Image"
@@ -36,7 +36,7 @@ python drive.py model.h5
 
 The model.py file contains the code for training and saving the convolution neural network. The file shows the pipeline I used for training and validating the model, and it contains comments to explain how the code works.
 
-The model for this project built consists of a convolution neural network with 5x5 and 3x3 filter sizes and depths between 6 and 12 (model.py lines 65, 67, 69 and 71). At every convolutional layer, a pooling layer is appended to it. 
+The model for this project built consists of a convolution neural network with 5x5 and 3x3 filter sizes and depths between 6 and 32 (model.py lines 65, 67, 69 and 71). At every convolutional layer, a pooling layer is appended to it. 
 
 The model includes RELU layers to introduce nonlinearity, and the data is normalized in the model using a Keras lambda layer (code line 61). Another layer performs image cropping to remove the landscape and the car body from the image (code line 62).
 
@@ -46,7 +46,7 @@ The model was trained and validated on different data sets to ensure that the mo
 
 #### 1. Model parameter tuning
 
-The model used the rmsprop optimizer predefined in Keras, so the learning rate was not tuned manually (model.py line 87).
+The model used the *RMSprop* optimizer predefined in Keras, so the learning rate was not tuned manually (model.py line 90).
 
 #### 2. Appropriate training data
 
@@ -56,7 +56,7 @@ Initially, data had been collected by driving the car in the simulator two laps 
 
 #### 1. Solution Design Approach
 
-The overall strategy for deriving a model architecture was to use similar networks built in previous projects since there wasn't any template to build the model from. ..
+The overall strategy for deriving a model architecture was to use similar networks built in previous projects since there wasn't any template to build the model from...
 
 My first attempt was to apply tranfer learning to the Inception v3 model. But the model was able to predict a single steering angle leading to a horrible driving performance. That strategy was dimissed in favor of a convolution neural network model with few convolutional layers and few dense layers. Subsequent iterations of the model helped to decrease the training loss. I thought this model might be appropriate because it was easily debuggable.
 
@@ -64,13 +64,17 @@ In order to gauge how well the model was working, I split my image and steering 
 
 A key point has been to find a good balance between the number of epochs and the batch size. These factors are strongly influenced by your computer hardware.
 
-The final step was to run the simulator to see how well the car was driving around track one. There were a few spots where the vehicle fell off the track when approaching to the bridge or while driving through it... to improve the driving behavior in these cases, I increased the number of hidden units in the last dense layer and added a fourth convolutional layer.
+The final step was to run the simulator to see how well the car was driving around track one. There were a few spots where the vehicle fell off the track when approaching to the bridge or while driving through it... to improve the driving behavior in these cases, I made the following improvements:
 
-At the end of the process, the vehicle is able to drive autonomously around the track without leaving the road.
+* To increase the number of hidden units in the last dense layer (from 16 to 32).
+* To add a fourth convolutional layer.
+* To decrease the correction on the steering angle from 1 to 0.2.
+
+At the end of the process, the vehicle is able to drive autonomously around the track without leaving the road. The validation error obtained was around 0.014.
 
 Here is a visualization of the network architecture 
 
-| Layer         		|     Description	        					| 
+<!--| Layer         		|     Description	        					| 
 |:---------------------:|:---------------------------------------------:| 
 | Input         		| 160x320x3 RGB image   							| 
 | Lambda            |                   |
@@ -95,9 +99,9 @@ Here is a visualization of the network architecture
 | RELU					|												|
 | Dropout					|												|
 | Dense		| inputs 256, outputs 32   						|
-| Dense 	| inputs 32, outputs 1   						|
+| Dense 	| inputs 32, outputs 1   						| -->
 
-<!--![alt text][image1]-->
+![alt text][image1]
 
 The output layer minimizes the mean square error (MSE) of the  real and predicted steering angle of the car.
 
